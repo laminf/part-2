@@ -37,7 +37,15 @@ setNewName('')
 
   return (
     <div>
-      <h2>Phonebook</h2>
+      <PersonForm addPerson={addPerson}newName={newName}newNumber={newNumber}name={name}number={number}/>
+      <Persons persons={persons}/>
+
+    </div>
+  )
+}
+const PersonForm=({addPerson,newName,newNumber,name,number})=>{
+  return(
+    <div>
       <form onSubmit={addPerson}> 
         <div>
           name: <input value={newName} onChange={name}/>
@@ -50,6 +58,15 @@ setNewName('')
           <button type="submit">add</button>
         </div>
       </form>
+    </div>
+  )
+}
+const Persons =({persons})=>{
+
+  return(
+    <div>
+<h2>Phonebook</h2>
+      
       <h2>Numbers</h2>
       {persons.map((name)=>{
         return <div>{name.name} {name.number}</div>
@@ -57,5 +74,6 @@ setNewName('')
     </div>
   )
 }
+
 
 export default App
