@@ -1,5 +1,5 @@
-
 import React, { useState } from 'react'
+
 
 const App = () => {
   const [ persons, setPersons ] = useState([
@@ -18,10 +18,18 @@ const addPerson=(event)=>{
   name: newName,
   
 }
+const isPerson=persons.some((p)=>{
+  return p.name===newName
+})
+if(isPerson){
+  window.alert(`${newName} is already in phonebook`)
+}
+
 setPersons(persons.concat(noteObject))
 
 setNewName('')
 }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -40,5 +48,5 @@ setNewName('')
     </div>
   )
 }
-export default App
 
+export default App
