@@ -1,79 +1,67 @@
-import React, { useState } from 'react'
+import React,{useState,useEffect} from "react";
+import axios from "axios";
+const App=()=>{
 
-
-const App = () => {
-  const [ persons, setPersons ] = useState([
-    { name: 'Arto Hellas',number :7167432 }
-    
-  ]) 
-  const [ newName, setNewName ] = useState('')
-const [newNumber, setNewNumber]=useState()
-  
-  const name=(e)=>{
+  const[persons, setPerson]=useState([])
+  const[newName,setNewName]=useState('')
+  const[newNumber,setNewNumber]=useState()
+  useEffect(() => {
+    console.log('effect')
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log('promise fulfilled')
+        setPerson(response.data)
+      })
+  }, [])
+  const name=(e)=>{ 
     setNewName(e.target.value)
-}
-const number=(e)=>{
-  setNewNumber(e.target.value)
-}
-const addPerson=(event)=>{
+  }
+  const number=(e)=>{ 
+    setNewNumber(e.target.value)
+  }
+  const addPerson =(event)=>{
+    event.preventDefault()
+    const noteObject={
+      name:newName,
+      number:newNumber
+    }
+    axios
+    .post('http://localhost:3001/persons')
+    .then(response => {
+      console.log('promise fulfilled')
+      setPerson(persons.concat (noteObject))
+    })
 
-  event.preventDefault()
-  const noteObject={
-  name: newName,
-number:newNumber
-  
-}
-const isPerson=persons.some((p)=>{
-  return p.name===newName
-})
-if(isPerson){
-  window.alert(`${newName} is already in phonebook`)
-}
+    const isperson=persons.some((p)=>{
 
-setPersons(persons.concat(noteObject))
-
-setNewName('')
-}
-
-  return (
-    <div>
-      <PersonForm addPerson={addPerson}newName={newName}newNumber={newNumber}name={name}number={number}/>
-      <Persons persons={persons}/>
-
-    </div>
-  )
-}
-const PersonForm=({addPerson,newName,newNumber,name,number})=>{
+      return p.name===newName
+    })
+    if(isperson){
+      window.alert(`${newName}is already in phonebook`)
+    }
+    setPerson(persons.concat(noteObject))
+    setNewName('')
+  }
   return(
     <div>
-      <form onSubmit={addPerson}> 
+      <h2>phonebook</h2>
+      <form onSubmit={addPerson}>
         <div>
-          name: <input value={newName} onChange={name}/>
-          
+          name:<input value={newName}onChange={name}/>
         </div>
         <div>
-        number: <input value={newNumber} onChange={number}/>
+          number:<input value={newNumber}onChange={number}/>
         </div>
-        <div>
+        <div> 
           <button type="submit">add</button>
         </div>
       </form>
-    </div>
-  )
-}
-const Persons =({persons})=>{
-
-  return(
-    <div>
-<h2>Phonebook</h2>
-      
       <h2>Numbers</h2>
       {persons.map((name)=>{
-        return <div>{name.name} {name.number}</div>
+        return<div>{name.name} {name.number}</div>
       })}
     </div>
   )
 }
-
-
 export default App
