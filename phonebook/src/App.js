@@ -30,11 +30,7 @@ const App=()=>{
       name:newName,
       number:newNumber
     }
-    person
-    .create(noteObject)
-     .then(response=>{
-       setPersons(persons.concat(response.data))
-     })
+    setPersons(persons.concat(noteObject))
 
      
     const isperson=persons.some((p)=>{
