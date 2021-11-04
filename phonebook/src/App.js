@@ -1,19 +1,23 @@
-import React,{useState,useEffect} from "react";
+import React,{ useState, useEffect}  from "react";
 import axios from "axios";
+import person from "./components/services/person";
 const App=()=>{
 
-  const[persons, setPerson]=useState([])
+  const[persons, setPersons]=useState([])
   const[newName,setNewName]=useState('')
-  const[newNumber,setNewNumber]=useState()
+  const[newNumber,setNewNumber]=useState('') 
   useEffect(() => {
     console.log('effect')
     axios
       .get('http://localhost:3001/persons')
       .then(response => {
         console.log('promise fulfilled')
-        setPerson(response.data)
+        setPersons(response.data)
+        
       })
   }, [])
+  
+ 
   const name=(e)=>{ 
     setNewName(e.target.value)
   }
@@ -26,13 +30,13 @@ const App=()=>{
       name:newName,
       number:newNumber
     }
-    axios
-    .post('http://localhost:3001/persons')
-    .then(response => {
-      console.log('promise fulfilled')
-      setPerson(persons.concat (noteObject))
-    })
+    person
+    .create(noteObject)
+     .then(response=>{
+       setPersons(persons.concat(response.data))
+     })
 
+     
     const isperson=persons.some((p)=>{
 
       return p.name===newName
@@ -40,27 +44,34 @@ const App=()=>{
     if(isperson){
       window.alert(`${newName}is already in phonebook`)
     }
-    setPerson(persons.concat(noteObject))
+    
     setNewName('')
+    setNewNumber('')
   }
+
+
   return(
     <div>
       <h2>phonebook</h2>
       <form onSubmit={addPerson}>
         <div>
-          name:<input value={newName}onChange={name}/>
+          name:<input value={newName} onChange={name}/>
+          
         </div>
         <div>
-          number:<input value={newNumber}onChange={number}/>
+          number:<input value={newNumber} onChange={number}/>
+          
         </div>
         <div> 
           <button type="submit">add</button>
         </div>
       </form>
       <h2>Numbers</h2>
+      <ul>
       {persons.map((name)=>{
-        return<div>{name.name} {name.number}</div>
+        return<li key={name.id}>{name.name} {name.number}</li>
       })}
+      </ul>
     </div>
   )
 }
