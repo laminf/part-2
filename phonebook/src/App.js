@@ -1,6 +1,6 @@
 import React,{ useState, useEffect}  from "react";
 import axios from "axios";
-import person from "./components/services/person";
+import person from "./services/person";
 const App=()=>{
 
   const[persons, setPersons]=useState([])
