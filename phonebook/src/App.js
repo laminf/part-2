@@ -1,6 +1,7 @@
 import React,{ useState, useEffect}  from "react";
 import axios from "axios";
 import person from "./services/person";
+
 const App=()=>{
 
   const[persons, setPersons]=useState([])
@@ -48,6 +49,13 @@ const App=()=>{
     setNewName('')
     setNewNumber('')
   }
+  const undelet=(id)=>{
+    const url=`http://localhost:3001/persons/${id}`
+    axios.delete(url)
+    .then(res=>{
+      setPersons(persons.filter((p)=>p.id !==id))
+    })
+  }
 
 
   return(
@@ -69,10 +77,11 @@ const App=()=>{
       <h2>Numbers</h2>
       <ul>
       {persons.map((name)=>{
-        return<li key={name.id}>{name.name} {name.number}</li>
+        return<div style={{display:'flex'}}><li key={name.id}>{name.name} {name.number}</li> <button onClick={()=>undelet(name.id)}>delete</button></div>
       })}
       </ul>
     </div>
   )
 }
+
 export default App
