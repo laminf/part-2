@@ -1,7 +1,7 @@
 import React,{ useState, useEffect}  from "react";
 import axios from "axios";
 import person from "./services/person";
-
+import './index.css'
 const App=()=>{
 
   const[persons, setPersons]=useState([])
@@ -60,7 +60,8 @@ const App=()=>{
 
   return(
     <div>
-      <h2>phonebook</h2>
+      
+      <h2 className="m1">phonebook</h2>
       <form onSubmit={addPerson}>
         <div>
           name:<input value={newName} onChange={name}/>
@@ -77,7 +78,7 @@ const App=()=>{
       <h2>Numbers</h2>
       <ul>
       {persons.map((name)=>{
-        return<div style={{display:'flex'}}><li key={name.id}>{name.name} {name.number}</li> <button onClick={()=>undelet(name.id)}>delete</button></div>
+        return<div style={{display:'flex'}} key={name.id} ><li >{name.name} {name.number}</li> <button onClick={()=>undelet(name.id)}>delete</button></div>
       })}
       </ul>
     </div>
